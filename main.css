@@ -50,3 +50,9 @@ table {
 
 /*end of reset and importing font*/
 
+.container {
+    font-family: Roboto, sans-serif;
+    font-size: 2rem;
+    width: 40%;
+    margin: 20px auto;
+}
