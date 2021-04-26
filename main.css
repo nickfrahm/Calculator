@@ -121,6 +121,12 @@ body {
     color: white;
 }
 
+.button-row > div:hover {
+    cursor: pointer;
+}
+
+/*******Start of Media Queries*******/
+
 @media (max-width: 500px) {
     .container {
         background-color: #ada9a9;
