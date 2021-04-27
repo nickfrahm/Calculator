@@ -2,7 +2,8 @@ const Calculator = {
     input: "",
     output: "0",
     decimal: false,
-    operationValue: ""
+    operationValue: 0,
+    operation: ""
 };
 
 //allow input from clicking numbers
@@ -18,30 +19,44 @@ const clear = document.getElementById("clear");
 clear.addEventListener("click", () => clearAll());
 
 //giving operation buttons event handlers
-const add = document.getElementById("add");
-const subtract = document.getElementById("subtract");
-const multiply = document.getElementById("multiply");
-const divide = document.getElementById("divide");
+const addBtn = document.getElementById("add");
+const subtractBtn = document.getElementById("subtract");
+const multiplyBtn = document.getElementById("multiply");
+const divideBtn = document.getElementById("divide");
 
-add.addEventListener("click", () => add());
-subtract.addEventListener("click", () => subtract());
-multiply.addEventListener("click", () => multiply());
-divide.addEventListener("click", () => divide());
+addBtn.addEventListener("click", () => add());
+subtractBtn.addEventListener("click", () => subtract());
+multiplyBtn.addEventListener("click", () => multiply());
+divideBtn.addEventListener("click", () => divide());
 
-//set the input as output
-function displayOutput() {
+//calculate button
+const equalsBtn = document.getElementById("equals");
+equalsBtn.addEventListener("click", () => calculate());
+
+//set the input to output box
+function displayInput() {
     const outputText = document.querySelector("div.display-box");
     Calculator.output = Calculator.input;
     outputText.innerHTML = Calculator.output;
 }
 
 function add() {
-    Calculator.operationValue = 
+    Calculator.operation = "+";
+    Calculator.operationValue = parseFloat(Calculator.input) + parseFloat(Calculator.operationValue);
+    const outputText = document.querySelector("div.display-box");
+    outputText.innerHTML = Calculator.operationValue;
     Calculator.input = "0";
+    console.log(Calculator)
 };
 
-function subtract(a,b) {
-    return a-b;
+function subtract() {
+    Calculator.operation = "-";
+    Calculator.operationValue = parseFloat(Calculator.input) - parseFloat(Calculator.operationValue);
+    const outputText = document.querySelector("div.display-box");
+    console.log(`operation value: ${Calculator.operationValue}, input value: ${Calculator.input}`);
+    outputText.innerHTML = Calculator.operationValue;
+    Calculator.input = "0";
+    console.log(Calculator)
 };
 
 function multiply(a,b) {
@@ -52,16 +67,26 @@ function divide(a,b) {
     return a/b;
 };
 
-function calculate(a,b) {
-    
+function calculate() {
+    switch(Calculator.operation) {
+        case "+":
+            add();
+        case "-":
+            subtract();
+        case "x":
+            multiply();
+        case "/":
+            divide();
+    }
 };
 
 function clearAll() {
     Calculator.input = "0";
     Calculator.output = "0";
     Calculator.decimal = false; 
-    Calculator.operationValue = "";
-    displayOutput();
+    Calculator.operationValue = 0;
+    Calculator.operation = "";
+    displayInput();
 };
 
 function deleteLastEntry() {
@@ -72,16 +97,16 @@ function deleteLastEntry() {
     if (inputLength > 1 && parseFloat(Calculator.input) > 0) {
         console.log("positive backspace")
         Calculator.input = newInput;
-        displayOutput();
+        displayInput();
     } else if (inputLength > 2 && parseFloat(Calculator.input) < 0) {
         console.log("negative backspace")
         Calculator.input = newInput;
-        displayOutput();
+        displayInput();
     } else {
         console.log("only one digit")
         Calculator.input = "0";
         console.log(Calculator.input);
-        displayOutput();
+        displayInput();
     }
 };
 
@@ -89,10 +114,10 @@ function setNumInput(num) {
     if (Calculator.input !== "0") {
         Calculator.input += num;
         console.log(Calculator.input);
-        displayOutput();
+        displayInput();
     } else {
         Calculator.input = num;
         console.log(Calculator.input);
-        displayOutput();
+        displayInput();
     }
 };
