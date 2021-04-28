@@ -1,6 +1,5 @@
 const Calculator = {
     input: "",
-    output: "0",
     decimal: false,
     operationValue: 0,
     operation: ""
@@ -36,53 +35,31 @@ equalsBtn.addEventListener("click", () => calculate());
 //set the input to output box
 function displayInput() {
     const outputText = document.querySelector("div.display-box");
-    Calculator.output = Calculator.input;
-    outputText.innerHTML = Calculator.output;
+    outputText.innerHTML = Calculator.input;
 }
 
 function add() {
-    Calculator.operation = "+";
-    Calculator.operationValue = parseFloat(Calculator.input) + parseFloat(Calculator.operationValue);
-    const outputText = document.querySelector("div.display-box");
-    outputText.innerHTML = Calculator.operationValue;
-    Calculator.input = "0";
-    console.log(Calculator)
+    
 };
 
 function subtract() {
-    Calculator.operation = "-";
-    Calculator.operationValue = parseFloat(Calculator.input) - parseFloat(Calculator.operationValue);
-    const outputText = document.querySelector("div.display-box");
-    console.log(`operation value: ${Calculator.operationValue}, input value: ${Calculator.input}`);
-    outputText.innerHTML = Calculator.operationValue;
-    Calculator.input = "0";
-    console.log(Calculator)
+    
 };
 
-function multiply(a,b) {
-    return a*b;
+function multiply() {
+    
 };
 
-function divide(a,b) {
-    return a/b;
+function divide() {
+    
 };
 
 function calculate() {
-    switch(Calculator.operation) {
-        case "+":
-            add();
-        case "-":
-            subtract();
-        case "x":
-            multiply();
-        case "/":
-            divide();
-    }
-};
+    return;
+}
 
 function clearAll() {
     Calculator.input = "0";
-    Calculator.output = "0";
     Calculator.decimal = false; 
     Calculator.operationValue = 0;
     Calculator.operation = "";
@@ -92,7 +69,7 @@ function clearAll() {
 function deleteLastEntry() {
     let inputLength = Calculator.input.length;
     let newInput = Calculator.input.slice(0, -1);
-    console.log(newInput);
+    //console.log(newInput);
 
     if (inputLength > 1 && parseFloat(Calculator.input) > 0) {
         console.log("positive backspace")
@@ -113,11 +90,11 @@ function deleteLastEntry() {
 function setNumInput(num) {
     if (Calculator.input !== "0") {
         Calculator.input += num;
-        console.log(Calculator.input);
+        //console.log(Calculator.input);
         displayInput();
     } else {
         Calculator.input = num;
-        console.log(Calculator.input);
+        //console.log(Calculator.input);
         displayInput();
     }
 };
