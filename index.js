@@ -79,6 +79,11 @@ function subtract() {
 }
 
 function multiply() {
+  if (Calculator.operation !== "x") {
+    performLastOperation();
+    Calculator.operation = "x";
+    return console.log("Prevent multiplying by phantom 0.");
+  }
   if (Calculator.values.length < 1) {
     Calculator.values.push(parseFloat(Calculator.input));
     Calculator.input = "0";
@@ -90,26 +95,33 @@ function multiply() {
     outputText.innerHTML = Calculator.values[0];
     Calculator.input = "0";
   }
+  Calculator.operation = "x";
   console.log(`input: ${Calculator.input}, values ${Calculator.values}`);
 }
 
 function divide() {
+  if (Calculator.operation !== "/") {
+    performLastOperation();
+    Calculator.operation = "/";
+    return console.log("Prevent dividing by phantom 0.");
+  }
   if (Calculator.values.length < 1) {
     Calculator.values.push(parseFloat(Calculator.input));
     Calculator.input = "0";
   } else {
     Calculator.values.push(parseFloat(Calculator.input));
-    Calculator.values[0] = Calculator.values[0] / Calculator.values[1];
+    if(Calculator.values[1] === 0) {
+      return alert("You can't divide by zero.");
+    } else {
+      Calculator.values[0] = Calculator.values[0] / Calculator.values[1];
+    }
     Calculator.values.pop();
     const outputText = document.querySelector("div.display-box");
     outputText.innerHTML = Calculator.values[0];
     Calculator.input = "0";
   }
+  Calculator.operation = "/";
   console.log(`input: ${Calculator.input}, values ${Calculator.values}`);
-}
-
-function calculate() {
-  return;
 }
 
 function clearAll() {
