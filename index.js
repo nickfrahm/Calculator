@@ -1,13 +1,14 @@
 let input = "";
-let output = parseFloat(document.getElementById("display").innerHTML);
-let operator = "";
-console.log(input, output, operator)
+let num1 = null;
+let num2 = null;
+let operator1 = null;
+let operator2 = null;
+let output = document.getElementById("display")
 
 //allow input from clicking numbers
 const numbers = document.querySelectorAll("div.num");
 numbers.forEach((number) =>
   number.addEventListener("click", () => {
-    console.log(input);
     setNumInput(number.innerHTML)
   })
 );
@@ -26,26 +27,14 @@ const subtractBtn = document.getElementById("subtract");
 const multiplyBtn = document.getElementById("multiply");
 const divideBtn = document.getElementById("divide");
 
-addBtn.addEventListener("click", () => {
-  operator = "+";
-  operate(operator, parseFloat(input),output)
-});
-subtractBtn.addEventListener("click", () => {
-  operator = "-";
-  operate(operator, parseFloat(input),output)
-});
-multiplyBtn.addEventListener("click", () => {
-  operator = "x";
-  operate(operator, parseFloat(input),output)
-});
-divideBtn.addEventListener("click", () => {
-  operator = "/";
-  operate(operator, parseFloat(input),output)
-});
+addBtn.addEventListener("click", () => {prepareCalculation("+")});
+subtractBtn.addEventListener("click", () => {prepareCalculation("-")});
+multiplyBtn.addEventListener("click", () => {prepareCalculation("x")});
+divideBtn.addEventListener("click", () => {prepareCalculation("/")});
 
 //calculate button
 const equalsBtn = document.getElementById("equals");
-equalsBtn.addEventListener("click", () => operate(operator, parseFloat(input),output));
+equalsBtn.addEventListener("click", () => operate(operator1, parseFloat(input),output));
 
 function add(a, b) {
 	return a + b;
@@ -66,14 +55,16 @@ function divide(a,b) {
 function clearAll() {
   input = "0";
   output = 0;
-  operator = "";
+  num1 = null;
+  num2 = null;
+  operator1 = null;
+  operator1 = null;
   displayInput();
 }
 
 function deleteLastEntry() {
   let inputLength = input.length;
   let newInput = input.slice(0, -1);
-  //console.log(newInput);
 
   if (inputLength > 1 && parseFloat(input) > 0) {
     console.log("positive backspace");
@@ -100,38 +91,49 @@ function setNumInput(num) {
     //console.log(input);
   }
   displayInput();
-  console.log(input, output);
 }
 
 function displayInput() {
-  output = input;
   const outputText = document.getElementById("display");
-  outputText.innerHTML = parseFloat(output);
+  outputText.innerHTML = parseFloat(input);
 }
 
 function operate(op, a, b) {
-	const outputText = document.getElementById("display");
   console.log(a,op,b)
 	switch(op) {
-		case "":
-      console.log('no operator');
-			break;
 		case "+":
-      output = add(a,b);
-			outputText.innerHTML = output.toString();
+      output.innerHTML = add(a, b).toString();
 			break;
 		case "-":
-			output = subtract(a,b);
-			outputText.innerHTML = output.toString();
+			output.innerHTML = subtract(a, b);
 			break;
 		case "x":
-			output = multiply(a,b);
-			outputText.innerHTML = output.toString();
+			output.innerHTML = multiply(a, b);
 			break;
 		case "/":
-			output = divide(a,b);
-			outputText.innerHTML = output.toString();
+      output.innerHTML = divide(a, b);
 			break;
+    default:
+      console.log('no operator');
+      break;
 	}
   input = "0";
+}
+
+function prepareCalculation(op) {
+  if(num1 === null) {                         //Prepare First Operation
+    num1 = parseFloat(input);
+    input = "0";
+    operator1 = op;
+  } else if (num2 === null) {                 //Store Second Operation, Calculate First Op, prepare next Operation
+    if (operator2 === null) operator2 = op;
+    num2 = parseFloat(input);
+    input = "0";
+    operate(operator1, num1, num2);
+    num1 = parseFloat(output.innerHTML);
+    num2 = null;
+    operator1 = operator2;
+    operator2 = null;
+  };
+  console.log(`num1: ${num1} num2: ${num2} op1: ${operator1} op2: ${operator2} output: ${output.innerHTML}`);
 }
