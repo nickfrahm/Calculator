@@ -1,9 +1,7 @@
-const Calculator = {
-  input: "",
-  values: [],
-  decimal: false,
-  operation: "",
-};
+let input = "";
+let output = parseFloat(document.getElementById("display").innerHTML);
+let operator = "";
+console.log(input, output, operator)
 
 //allow input from clicking numbers
 const numbers = document.querySelectorAll("div.num");
@@ -25,10 +23,10 @@ const subtractBtn = document.getElementById("subtract");
 const multiplyBtn = document.getElementById("multiply");
 const divideBtn = document.getElementById("divide");
 
-addBtn.addEventListener("click", () => add());
-subtractBtn.addEventListener("click", () => subtract());
-multiplyBtn.addEventListener("click", () => multiply());
-divideBtn.addEventListener("click", () => divide());
+addBtn.addEventListener("click", () => operate("+", parseFloat(input),output));
+subtractBtn.addEventListener("click", () => operate("-", parseFloat(input),output));
+multiplyBtn.addEventListener("click", () => operate("x", parseFloat(input),output));
+divideBtn.addEventListener("click", () => operate("/", parseFloat(input),output));
 
 //calculate button
 const equalsBtn = document.getElementById("equals");
@@ -36,155 +34,93 @@ equalsBtn.addEventListener("click", () => calculate());
 
 //set the input to output box
 function displayInput() {
-  const outputText = document.querySelector("div.display-box");
-  outputText.innerHTML = Calculator.input;
+  const outputText = document.getElementById("display");
+  outputText.innerHTML = input;
 }
 
-function add() {
-  if (Calculator.operation !== "+") {
-    performLastOperation();
-  }
-  if (Calculator.values.length < 1) {
-    Calculator.values.push(parseFloat(Calculator.input));
-    Calculator.input = "0";
-  } else {
-    Calculator.values.push(parseFloat(Calculator.input));
-    Calculator.values[0] = Calculator.values[0] + Calculator.values[1];
-    Calculator.values.pop();
-    const outputText = document.querySelector("div.display-box");
-    outputText.innerHTML = Calculator.values[0];
-    Calculator.input = "0";
-  }
-  Calculator.operation = "+";
-  console.log(`input: ${Calculator.input}, values ${Calculator.values}`);
+function add(a, b) {
+	return a + b;
 }
 
-function subtract() {
-  if (Calculator.operation !== "-") {
-    performLastOperation();
-  }
-  if (Calculator.values.length < 1) {
-    Calculator.values.push(parseFloat(Calculator.input));
-    Calculator.input = "0";
-  } else {
-    Calculator.values.push(parseFloat(Calculator.input));
-    Calculator.values[0] = Calculator.values[0] - Calculator.values[1];
-    Calculator.values.pop();
-    const outputText = document.querySelector("div.display-box");
-    outputText.innerHTML = Calculator.values[0];
-    Calculator.input = "0";
-  }
-  Calculator.operation = "-";
-  console.log(`input: ${Calculator.input}, values ${Calculator.values}`);
+function subtract(a, b) {
+	return a - b;
 }
 
-function multiply() {
-  if (Calculator.operation !== "x") {
-    performLastOperation();
-    Calculator.operation = "x";
-    return console.log("Prevent multiplying by phantom 0.");
-  }
-  if (Calculator.values.length < 1) {
-    Calculator.values.push(parseFloat(Calculator.input));
-    Calculator.input = "0";
-  } else {
-    Calculator.values.push(parseFloat(Calculator.input));
-    Calculator.values[0] = Calculator.values[0] * Calculator.values[1];
-    Calculator.values.pop();
-    const outputText = document.querySelector("div.display-box");
-    outputText.innerHTML = Calculator.values[0];
-    Calculator.input = "0";
-  }
-  Calculator.operation = "x";
-  console.log(`input: ${Calculator.input}, values ${Calculator.values}`);
+function multiply(a, b) {
+	return a * b;
 }
 
-function divide() {
-  if (Calculator.operation !== "/") {
-    performLastOperation();
-    Calculator.operation = "/";
-    return console.log("Prevent dividing by phantom 0.");
-  }
-  if (Calculator.values.length < 1) {
-    Calculator.values.push(parseFloat(Calculator.input));
-    Calculator.input = "0";
-  } else {
-    Calculator.values.push(parseFloat(Calculator.input));
-    if(Calculator.values[1] === 0) {
-      return alert("You can't divide by zero.");
-    } else {
-      Calculator.values[0] = Calculator.values[0] / Calculator.values[1];
-    }
-    Calculator.values.pop();
-    const outputText = document.querySelector("div.display-box");
-    outputText.innerHTML = Calculator.values[0];
-    Calculator.input = "0";
-  }
-  Calculator.operation = "/";
-  console.log(`input: ${Calculator.input}, values ${Calculator.values}`);
+function divide(a,b) {
+	return a / b;
 }
 
 function clearAll() {
-  Calculator.input = "0";
-  Calculator.decimal = false;
-  Calculator.values = [];
-  Calculator.operation = "";
+  input = "0";
+  operation = "";
   displayInput();
 }
 
 function deleteLastEntry() {
-  let inputLength = Calculator.input.length;
-  let newInput = Calculator.input.slice(0, -1);
+  let inputLength = input.length;
+  let newInput = input.slice(0, -1);
   //console.log(newInput);
 
-  if (inputLength > 1 && parseFloat(Calculator.input) > 0) {
+  if (inputLength > 1 && parseFloat(input) > 0) {
     console.log("positive backspace");
-    Calculator.input = newInput;
+    input = newInput;
     displayInput();
-  } else if (inputLength > 2 && parseFloat(Calculator.input) < 0) {
+  } else if (inputLength > 2 && parseFloat(input) < 0) {
     console.log("negative backspace");
-    Calculator.input = newInput;
+    input = newInput;
     displayInput();
   } else {
     console.log("only one digit");
-    Calculator.input = "0";
-    console.log(Calculator.input);
+    input = "0";
+    console.log(input);
     displayInput();
   }
 }
 
 function setNumInput(num) {
-  if (Calculator.input !== "0") {
-    Calculator.input += num;
-    //console.log(Calculator.input);
+  if (input !== "0") {
+    input += num;
+    //console.log(input);
     displayInput();
   } else {
-    Calculator.input = num;
-    //console.log(Calculator.input);
+    input = num;
+    //console.log(input);
     displayInput();
   }
-  console.log(`input: ${Calculator.input}, values ${Calculator.values}`);
 }
 
-function performLastOperation() {
-  switch (Calculator.operation) {
-    case "+":
-      add();
-      Calculator.operation = "";
-      break;
-    case "-":
-      subtract();
-      Calculator.operation = "";
-      break;
-    case "x":
-      multiply();
-      Calculator.operation = "";
-      break;
-    case "/":
-      divide();
-      Calculator.operation = "";
-      break;
-    default:
-      console.log("No Operation.");
-  }
+
+function operate(op, a, b) {
+	const outputText = document.getElementById("display");
+  console.log(a,op,b)
+	switch(op) {
+		case "":
+      console.log('no operator');
+			outputText.innerHTML = parseFloat(input);
+			break;
+		case "+":
+      console.log('add');
+      output = add(a,b);
+			outputText.innerHTML = output.toString();
+			break;
+		case "-":
+      console.log('subtract');
+			output = subtract(a,b);
+			outputText.innerHTML = output.toString();
+			break;
+		case "x":
+      console.log('multiply');
+			output = multiply(a,b);
+			outputText.innerHTML = output.toString();
+			break;
+		case "/":
+      console.log('divide');
+			output = divide(a,b);
+			outputText.innerHTML = output.toString();
+			break;
+	}
 }
