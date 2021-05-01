@@ -32,7 +32,7 @@ window.addEventListener("keypress", (e) => {
   } else if (e.key === "-") {
     prepareCalculation("-");
   } else if (e.key === "*") {
-    prepareCalculation("*");
+    prepareCalculation("x");
   } else if (e.key === "/") {
     prepareCalculation("/");
   } else if (e.key === "Enter") {
