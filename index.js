@@ -45,9 +45,17 @@ divideBtn.addEventListener("click", () => {
 
 //calculate button
 const equalsBtn = document.getElementById("equals");
-equalsBtn.addEventListener("click", () =>
-  prepareCalculation("")
-);
+equalsBtn.addEventListener("click", () => prepareCalculation(""));
+
+//decimal button
+const decimalBtn = document.getElementById("decimal");
+decimalBtn.addEventListener("click", () => {
+  if (input.indexOf(".") === -1) {
+    input += ".";
+    output.innerHTML = input;
+    console.log(input);
+  }
+});
 
 function add(a, b) {
   return a + b;
